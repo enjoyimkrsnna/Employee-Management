@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/signup-form.css">
+    <link rel="stylesheet" href="../css/tables.css">
+    <title>Employee Management</title>
+    <script src="../javascript/formsubmit.js" defer></script>
+</head>
+<body>
+    <div class="hero">
+        <h2>Employee Form</h2>
+        <div class="registration-main">
+            <form id="employeeForm">
+                <div class="form-flex">
+                    <div class="input-group">
+                        <label class="label" for="name">Name :</label>
+                        <div class="input-span-group">
+                            <input class="text-input" type="text" id="name" placeholder="Enter your name" required />
+                            <span class="span-text" id="nameError"></span>
+                        </div>
+                       
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Gender:</label>
+                        <div class="radio-group">
+                           <input type="radio" name="gender" id="1" checked class="radio-input">
+                           <label>Male</label>
+                           <input type="radio" name="gender" id="2" class="radio-input">
+                           <label>Female</label>
+                        </div>
+                        <span class="span-text" id="genderError"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="dob" class="label">Date of Birth:</label>
+                        <div class="input-span-group">
+                            <input type="date" id="dob" class="text-input" name="dob" max="" required>
+                            <span class="span-text" id="dobError"></span>
+                        </div>
+                       
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label" for="email">Email:</label>
+                        <div class="input-span-group">
+                            <input class="text-input" type="email" id="email" placeholder="Enter your email" required />
+                             <span class="span-text" id="emailError"></span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="input-group">
+                        <label for="phone" class="label">Phone No:</label>
+                        <div class="input-span-group">
+                            <input type="tel" id="phone" class="text-input" placeholder="Enter Phone No" name="phone" required>
+                            <span class="span-text" id="phoneError"></span>
+                        </div>
+                       
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Hobbies:</label>
+                        <div class="hobbies-group">
+                            <label> <input type="checkbox" class="hobbies" name="hobbies" id="id_cricket" value="Cricket">Cricket </label>
+                            <label> <input type="checkbox" class="hobbies" name="hobbies" value="Chess">Chess </label>
+                            <label> <input type="checkbox" class="hobbies" name="hobbies" value="Music">Music </label>
+                        </div>
+                        <span class="span-text" id="hobbiesError"></span>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="submit-button">Submit</button>
+                        <button type="reset" class="reset-button" onclick="resetForm()">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+         <!-- start of basic table -->
+         <h2>Basic</h2>
+
+         <div class="basic-table-container">
+             <table class="basic-table">
+                 <thead>
+                     <tr>
+                         <th>Name</th>
+                         <th>Gender</th>
+                         <th>DOB</th>
+                         <th>Email</th>
+                         <th>Phone No</th>
+                         <th>Hobbies</th>
+                         <th>Action</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                 </tbody>
+             </table>
+         </div>
+         <!-- End of basic table -->
+
+         <!-- start of advance table -->
+        <h2>Advance</h2>
+
+        <div class="advance-table-container">
+        </div>
+        <!-- end of advance table -->
+
+    </div>
+</body>
+</html>

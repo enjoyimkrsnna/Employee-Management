@@ -1,0 +1,170 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.hero {
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.registration-main {
+  background-color: white;
+  width: 70%;
+  padding: 20px;
+  margin-top: 25px;
+  border-top: 30px solid rgb(8, 133, 211);
+  box-shadow: 0px 0px 0px 2px rgb(8, 133, 211);
+  display: flex;
+  justify-content: center;
+  
+}
+
+form {
+  width: 100%; 
+}
+
+.form-flex {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* border: 1px solid black; */
+}
+
+.input-group {
+  display: flex;
+  align-items: flex-start; 
+  margin-bottom: 15px;
+  /* border: 1px solid red; */
+  margin-top: 20px;
+}
+
+
+.label {
+  width: 30%; 
+  flex-shrink: 0;
+  margin-bottom: 5px;
+  /* border: 1px solid blue; */
+}
+
+
+.text-input {
+  flex: 1; 
+  padding: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.input-span-group {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.span-text {
+  position: absolute;
+  color: red;
+  font-size: 0.9em; 
+  top: 100%;
+  left: 0; 
+  visibility: hidden; 
+}
+
+.text-input:focus + .span-text,
+.text-input:valid + .span-text {
+  visibility: visible; 
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+  flex: 1; 
+}
+
+.hobbies-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.hobbies{
+  margin-right: 10px;
+}
+.button-group {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  margin-left: 250px;
+}
+
+.submit-button,
+.reset-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  flex: 0;
+  
+}
+
+.submit-button {
+  background-color: rgb(8, 133, 211);
+  color: white;
+}
+
+.reset-button {
+  background-color: rgb(241, 103, 10);
+  color: white;
+}
+.error-border{
+    border: 1px solid red;
+}
+/* Responsive adjustments using Flexbox */
+@media (max-width: 768px) {
+  .registration-main {
+      width: 90%;
+  }
+
+  .input-group {
+      flex-direction: column; 
+      align-items: flex-start; 
+  }
+
+  .label {
+      width: 100%; 
+      margin-bottom: 5px;
+  }
+
+  .text-input {
+      width: 100%;
+  }
+
+  .button-group {
+      flex-direction: column;
+      margin-left:0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-main {
+      width: 100%;
+  }
+
+  .submit-button,
+  .reset-button {
+      width: 100%;
+  }
+}
