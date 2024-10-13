@@ -71,98 +71,50 @@ function clearError(field) {
     document.getElementById(field).classList.remove("error-border");
 }
 
-// Handle form submission
-function handleSubmit(event) {
-    event.preventDefault();
-
-    console.log("form submitted")
-    // Validate all fields before processing
-    validateName();
-    validateDOB();
-    validateEmail();
-    validatePhone();
-
-    // Check for any errors
-    if (document.querySelectorAll('.error-border').length > 0) {
-        return; 
-    }
-
-    const employeeData = {
-        name: document.getElementById('name').value,
-        gender: document.querySelector('input[name="gender"]:checked').nextElementSibling.textContent,
-        dob: document.getElementById('dob').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        hobbies: Array.from(document.querySelectorAll('input[name="hobbies"]:checked')).map(checkbox => checkbox.nextSibling.textContent.trim())
-    };
-
-    if (editingIndex !== null) {
-        employees[editingIndex] = employeeData;
-        editingIndex = null; 
-    } else {
-        employees.push(employeeData);
-    }
-
-    saveToLocalStorage();
-    displayTables();
-    resetForm();
-}
-
-function resetForm() {
-    document.querySelector('form').reset();
-    editingIndex = null;
-}
-
-// Row clicked event handler
-function rowclicked(index) {
-    editEmployee(index);
-}
-
-// Update displaying basic table data
-function displayBasicTable() {
-    console.log("hey from basic table")
+// Insert a new row or update an existing one in the basic table
+function updateBasicTableRow(employee, index) {
+    console.log("employee length ", employees.length ," index value ",index)
     const basicTableBody = document.querySelector('.basic-table tbody');
-    
-    // Clear existing rows
-    basicTableBody.innerHTML = ''; 
+    let row = document.getElementById(`row-${index}`);
 
-    employees.forEach((employee, index) => {
-        const row = document.createElement('tr');
-        // row.setAttribute('onclick', `rowclicked(${index})`);
-        
-        row.innerHTML = `
-            <td>${employee.name}</td>
-            <td>${employee.gender}</td>
-            <td>${employee.dob}</td>
-            <td>${employee.email}</td>
-            <td>${employee.phone}</td>
-            <td>${employee.hobbies.join(', ')}</td>
-            <td>
-                <button class='editbutton' onclick="editEmployee(${index})" >Edit</button> | 
-                <button class="deletebutton" onclick="deleteEmployee(${index})">Delete</button>
-            </td>
-        `;
-        
+    if (!row) { 
+        row = document.createElement('tr');
+        row.setAttribute('id', `row-${index}`);
         basicTableBody.appendChild(row);
+    }
+
+    row.innerHTML = `
+        <td>${employee.name}</td>
+        <td>${employee.gender}</td>
+        <td>${employee.dob}</td>
+        <td>${employee.email}</td>
+        <td>${employee.phone}</td>
+        <td>${employee.hobbies.join(', ')}</td>
+        <td>
+            <button class='editbutton' onclick="editEmployee(${index})">Edit${index}</button> | 
+            <button class="deletebutton" onclick="deleteEmployee(${index})">Delete</button>
+        </td>
+    `;
+}
+
+// Display the entire basic table
+function displayBasicTable() {
+    employees.forEach((employee, index) => {
+        updateBasicTableRow(employee, index);
     });
 }
 
-// Update displaying Advanced table data
-function displayAdvancedTable() {
-    console.log("hey from advance table")
+// Create the advanced table once
+function createAdvancedTable() {
     const advanceTableContainer = document.querySelector('.advance-table-container');
 
     // Clear existing table if any
     advanceTableContainer.innerHTML = '';
 
-    if (employees.length === 0) {
-        advanceTableContainer.innerHTML = '<p>No employees available.</p>';
-        return;
-    }
-
+    // Create table HTML
     let tableHtml = `
-        <table class="advance-table">
-            <thead>
+        <table class="advance-table">              
+            <tbody>
                 <tr>
                     <th>Name</th>
                     ${employees.map(employee => `<td>${employee.name}</td>`).join('')}
@@ -187,29 +139,90 @@ function displayAdvancedTable() {
                     <th>Hobbies</th>
                     ${employees.map(employee => `<td>${employee.hobbies.join(', ')}</td>`).join('')}
                 </tr>
-
                 <tr>
                     <th>Actions</th>
-                    ${employees.map((employee, index) => `
+                    ${employees.map((_, index) => `
                         <td>
-                            <button class='editbutton'onclick="editEmployee(${index})">Edit</button> |
+                            <button class='editbutton' onclick="editEmployee(${index})">Edit</button> |
                             <button class="deletebutton" onclick="deleteEmployee(${index})">Delete</button>
                         </td>
                     `).join('')}
                 </tr>
-
-            </thead>
+            </tbody>
         </table>
     `;
 
     advanceTableContainer.innerHTML = tableHtml;
 }
 
+// Display the advanced table once
+function displayAdvancedTable() {
+    createAdvancedTable();  
+}
+
+
+// Display both tables on DOMContentLoaded
+function displayTables() {
+    displayBasicTable();
+    displayAdvancedTable();
+}
+
+// Handle form submission
+function handleSubmit(event) {
+    event.preventDefault();
+
+    // Validate all fields
+    validateName();
+    validateDOB();
+    validateEmail();
+    validatePhone();
+
+    if (document.querySelectorAll('.error-border').length > 0) {
+        return;
+    }
+
+    const employeeData = {
+        name: document.getElementById('name').value,
+        gender: document.querySelector('input[name="gender"]:checked').nextElementSibling.textContent,
+        dob: document.getElementById('dob').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        hobbies: Array.from(document.querySelectorAll('input[name="hobbies"]:checked')).map(checkbox => checkbox.nextSibling.textContent.trim())
+    };
+
+    if (editingIndex !== null) {
+        employees[editingIndex] = employeeData;
+        updateBasicTableRow(employeeData, editingIndex);
+       displayAdvancedTable();
+        editingIndex = null;
+    } else {
+        employees.push(employeeData); 
+        updateBasicTableRow(employeeData, employees.length - 1);
+        displayAdvancedTable();
+    }
+
+    saveToLocalStorage();
+    resetForm();
+}
+
+// Reset form after submission
+function resetForm() {
+    document.querySelector('form').reset();
+    editingIndex = null;
+}
+
 // Delete employee
 function deleteEmployee(index) {
     employees.splice(index, 1);
     saveToLocalStorage();
+
+    const basicRow = document.getElementById(`row-${index}`);
+    const advRow = document.getElementById(`adv-row-${index}`);
+    if (basicRow) basicRow.remove();
+    if (advRow) advRow.remove();
+
     displayTables();
+    
 }
 
 // Edit employee
@@ -222,7 +235,7 @@ function editEmployee(index) {
     document.getElementById('phone').value = employee.phone;
 
     document.querySelectorAll('input[name="hobbies"]').forEach(checkbox => {
-        checkbox.checked = employee.hobbies.includes(checkbox.value);
+        checkbox.checked = employee.hobbies.includes(checkbox.nextSibling.textContent.trim());
     });
 
     document.getElementById(employee.gender === 'Male' ? '1' : '2').checked = true;
@@ -230,11 +243,6 @@ function editEmployee(index) {
     editingIndex = index;
 }
 
-// Display tables on DOMContentLoaded
-function displayTables() {
-    displayBasicTable();
-    displayAdvancedTable();
-}
-
+// Display both tables when the page loads
 document.addEventListener('DOMContentLoaded', displayTables);
 document.querySelector('form').addEventListener('submit', handleSubmit);
